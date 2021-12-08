@@ -1,0 +1,73 @@
+#!/bin/bash
+
+## the basic idea of this script is to generate an express app boilerplate, to speed up the starter building process of a nodejs app.
+
+
+
+## we will check if there is a js file, 
+## if so, stop the script to avoid potential correptions
+## for that we are executing the ls *js command,
+## so if there was not a js file, the script can run
+## but we do not want the ls error message, so we throw it away
+
+if [ $( ls *js 2>/dev/null )  ]; then
+	echo "it seems that there is already a javascript file"
+	echo "please remove it, and excute the script again"
+	echo "exiting bash process..."
+	exit;
+fi	
+
+
+if [ ! $( ls packags.json   2>/dev/null ) ]; then
+      npm init -y
+fi
+npm install express path ejs ejs-mate
+
+
+
+
+mkdir css views 
+
+
+if [ "$1" ]; then
+	jsFile="$1"
+else
+	jsFile="index.js"
+fi
+
+echo "
+const express = require('express');
+const app = express();
+const path = require('path');
+const ejs = require('ejs');
+const ejs_mate = require('ejs-mate');
+const port = process.env.PORT || 3000;
+
+
+
+app.engine('ejs', ejs_mate);
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use('/css', express.static('css'))
+
+
+
+app.get('/', (req, res) => {
+    res.send('it is set up');
+})
+
+app.listen(port, (req, res) => {
+    console.log('server started');
+})
+
+" >> $jsFile
+
+
+if [ ! $( ls -a *git 2>/dev/null ) ]; then
+	echo "setting up git"
+	echo "run git init..."
+	git init 
+	echo "opening up github.com"
+	firefox --url "github.com/new"
+fi
+	
