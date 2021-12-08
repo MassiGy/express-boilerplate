@@ -10,7 +10,7 @@ The basic idea of this script is to generate an express app boilerplate, to spee
 	--
 	cd express-boilerplate
 	--
-	cp ./express-boilerplate /usr/bin/css-injector
+	cp ./express-boilerplate /usr/bin/express-boilerplate
 	--
 	// OPTIONAL
 	which express-boilerplate
